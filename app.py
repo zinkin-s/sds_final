@@ -18,13 +18,17 @@ def calc_nominal_wage_index(df):
     nominal_wage = list(df['Всего по  экономике'])
     arr = []
     arr.append(2223 / 1523 * 100)
+
     for i in range(1, len(nominal_wage)):
         arr.append(nominal_wage[i]/nominal_wage[i-1]*100)
     
     return np.array(arr)
 
+def calculate_cip_rate(df):
+    pass
 
 
+st.set_page_config(page_title="Всего по экономике", page_icon="📈")
 st.title('Анализ заработных плат в Российской Федерации')
 
 path_1 = 'data//sheet_1.csv'
@@ -45,4 +49,4 @@ data['ИНЗП % к пред.году'] = calc_nominal_wage_index(data)
 data['ИРЗП % к пред. году'] = data['ИНЗП % к пред.году'] / data['ИПЦ'] * 100
 
 st.markdown('### ИНЗП и ИРЗП в % к пред.году')
-st.line_chart(data, y=['ИРЗП % к пред. году', 'ИПЦ'])
+st.line_chart(data, y=['ИРЗП % к пред. году', 'ИНЗП % к пред.году'])
