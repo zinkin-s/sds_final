@@ -14,6 +14,16 @@ def merge_datasets(df1, df2):
 def calculate_cpi():
     return inflation['Всего'] + 100
 
+def calc_nominal_wage_index(df):
+    nominal_wage = list(df['Всего по  экономике'])
+    arr = []
+    arr.append(2223 / 1523 * 100)
+    for i in range(1, len(nominal_wage)):
+        arr.append(nominal_wage[i]/nominal_wage[i-1]*100)
+    
+    return np.array(arr)
+
+
 
 st.title('Анализ заработных плат в Российской Федерации')
 
@@ -31,5 +41,8 @@ inflation = pd.read_csv(infl_path)
 data = data.set_index('Год').sort_index()
 inflation = inflation.set_index('Год').sort_index()
 data['ИПЦ'] = calculate_cpi()
+data['ИНЗП % к пред.году'] = calc_nominal_wage_index(data)
+data['ИРЗП % к пред. году'] = data['ИНЗП % к пред.году'] / data['ИПЦ'] * 100
 
-st.dataframe(data)
+st.markdown('### ИНЗП и ИРЗП в % к пред.году')
+st.line_chart(data, y=['ИРЗП % к пред. году', 'ИПЦ'])
