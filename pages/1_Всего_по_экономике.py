@@ -29,6 +29,7 @@ def calculate_cip_rate(df):
 
 
 st.set_page_config(page_title="Всего по экономике", page_icon="📈")
+st.sidebar.header('Всего по экономике')
 st.title('Анализ заработных плат в Российской Федерации')
 
 path_1 = 'data//sheet_1.csv'
