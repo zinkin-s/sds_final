@@ -11,7 +11,8 @@ def merge_datasets(df1, df2):
     df = pd.concat([df1, df2], ignore_index=True)
     return df
 
-
+def calculate_cpi():
+    return inflation['Всего'] + 100
 
 
 st.title('Анализ заработных плат в Российской Федерации')
@@ -24,4 +25,11 @@ sheet_2 = load_dataset(path_2)
 sheet_2 = sheet_2.rename(columns={'Всего': 'Всего по  экономике'})
 
 data = merge_datasets(sheet_1[['Год', 'Всего по  экономике']], sheet_2[['Год', 'Всего по  экономике']])
+
+infl_path = 'data//inflation.csv'
+inflation = pd.read_csv(infl_path)
+data = data.set_index('Год').sort_index()
+inflation = inflation.set_index('Год').sort_index()
+data['ИПЦ'] = calculate_cpi()
+
 st.dataframe(data)
