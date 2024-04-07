@@ -34,6 +34,14 @@ def calculate_cip_rate(df):
     
     return np.array(cip_rate) * 100
 
+def calculate_real_wage_rate(df):
+    arr = []
+    ys = list(df['ИРЗП % к пред. году'])
+    t = 1
+    for j in range(len(ys)):
+        t = t * (ys[j]/100)
+        arr.append(t)
+    return np.array(arr) * 100
 
 st.set_page_config(page_title="Всего по экономике", page_icon="📈")
 st.sidebar.header('Всего по экономике')
@@ -56,7 +64,8 @@ data['ИПЦ'] = calculate_cpi()
 data['ИНЗП % к пред.году'] = calc_nominal_wage_index(data)
 data['ИРЗП % к пред. году'] = data['ИНЗП % к пред.году'] / data['ИПЦ'] * 100
 data['ИПЦ % к базовому году'] = calculate_cip_rate(data)
-data['ИРЗП % к базовому году'] = data['Всего по  экономике'] / data['ИПЦ % к базовому году']
+data['РЗП % к базовому году'] = data['Всего по  экономике'] / (data['ИПЦ % к базовому году'] / 100)
+data['ИРЗП % к базовому году'] = calculate_real_wage_rate(data)
 
 st.markdown('### ИНЗП и ИРЗП в % к пред.году')
 st.line_chart(data, y=['ИРЗП % к пред. году', 'ИНЗП % к пред.году'])
