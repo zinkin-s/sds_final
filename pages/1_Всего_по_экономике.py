@@ -25,7 +25,14 @@ def calc_nominal_wage_index(df):
     return np.array(arr)
 
 def calculate_cip_rate(df):
-    pass
+    cip = list(df['ИПЦ'])
+    cip_rate = []
+    t = 1
+    for i in range(len(cip)):
+        t = t*cip[i]/100
+        cip_rate.append(t)
+    
+    return np.array(cip_rate) * 100
 
 
 st.set_page_config(page_title="Всего по экономике", page_icon="📈")
@@ -48,6 +55,7 @@ inflation = inflation.set_index('Год').sort_index()
 data['ИПЦ'] = calculate_cpi()
 data['ИНЗП % к пред.году'] = calc_nominal_wage_index(data)
 data['ИРЗП % к пред. году'] = data['ИНЗП % к пред.году'] / data['ИПЦ'] * 100
+data['ИПЦ к базовому году'] = calculate_cip_rate(data)
 
 st.markdown('### ИНЗП и ИРЗП в % к пред.году')
 st.line_chart(data, y=['ИРЗП % к пред. году', 'ИНЗП % к пред.году'])
