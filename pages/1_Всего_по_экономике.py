@@ -55,7 +55,9 @@ inflation = inflation.set_index('Год').sort_index()
 data['ИПЦ'] = calculate_cpi()
 data['ИНЗП % к пред.году'] = calc_nominal_wage_index(data)
 data['ИРЗП % к пред. году'] = data['ИНЗП % к пред.году'] / data['ИПЦ'] * 100
-data['ИПЦ к базовому году'] = calculate_cip_rate(data)
+data['ИПЦ % к базовому году'] = calculate_cip_rate(data)
+data['ИРЗП % к базовому году'] = data['Всего по  экономике'] / data['ИПЦ % к базовому году']
 
 st.markdown('### ИНЗП и ИРЗП в % к пред.году')
 st.line_chart(data, y=['ИРЗП % к пред. году', 'ИНЗП % к пред.году'])
+st.line_chart(data, y=['ИПЦ % к базовому году','ИРЗП % к базовому году'])
